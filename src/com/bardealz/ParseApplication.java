@@ -14,7 +14,7 @@ import com.parse.ParseUser;
 
 public class ParseApplication extends Application {
 
-	private static final String PROPERTY_ID = "UA–53197281–1";
+	private static final String PROPERTY_ID = "UA-53952866-1";
 
     public static int GENERAL_TRACKER = 0;
 
@@ -37,7 +37,7 @@ public class ParseApplication extends Application {
 		ParseUser.enableAutomaticUser();
 		ParseACL defaultACL = new ParseACL();
 
-		ParseFacebookUtils.initialize("1403369603273131");
+		ParseFacebookUtils.initialize("787239624631485");
 
 		// If you would like all objects to be private by default, remove this
 		// line.
