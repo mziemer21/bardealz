@@ -1,0 +1,120 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:id="@+id/main_wrapper">
+    
+    <TableLayout
+        android:id="@+id/buttonBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:stretchColumns="*" >
+        
+        <TableRow
+        android:id="@+id/tr1"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1" >
+
+		    <Button
+		        android:id="@+id/buttonList"
+				android:layout_width="0dip"
+            	android:layout_height="match_parent"
+            	android:layout_weight="0.5"
+		        android:background="@drawable/selector_fragment_home"
+		        android:shadowColor="#A8A8A8"
+		        android:shadowDx="0"
+		        android:shadowDy="0"
+		        android:shadowRadius="5"
+		        android:text="Bars"
+		        android:textColor="#FFFFFF"
+		        android:textSize="30sp"
+		        android:layout_margin="15dip" />
+	
+		    <Button
+		        android:id="@+id/buttonRandom"
+		        android:layout_width="0dip"
+            	android:layout_height="match_parent"
+            	android:layout_weight="0.5"
+		        android:background="@drawable/selector_fragment_home"
+		        android:shadowColor="#A8A8A8"
+		        android:shadowDx="0"
+		        android:shadowDy="0"
+		        android:shadowRadius="5"
+		        android:text="Random"
+		        android:textColor="#FFFFFF"
+		        android:textSize="30sp"
+		        android:layout_margin="15dip" />
+		</TableRow>
+		
+        <TableRow
+        android:id="@+id/tr2"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1" >
+		
+		    <Button
+		        android:id="@+id/buttonMap"
+		        android:layout_width="0dip"
+            	android:layout_height="match_parent"
+            	android:layout_weight="0.5"
+		        android:background="@drawable/selector_fragment_home"
+		        android:shadowColor="#A8A8A8"
+		        android:shadowDx="0"
+		        android:shadowDy="0"
+		        android:shadowRadius="5"
+		        android:text="Map"
+		        android:textColor="#FFFFFF"
+		        android:textSize="30sp"
+		        android:layout_margin="15dip" />
+		    
+		    <Button
+		        android:id="@+id/buttonDeals"
+		        android:layout_width="0dip"
+            	android:layout_height="match_parent"
+            	android:layout_weight="0.5"
+		        android:background="@drawable/selector_fragment_home"
+		        android:shadowColor="#A8A8A8"
+		        android:shadowDx="0"
+		        android:shadowDy="0"
+		        android:shadowRadius="5"
+		        android:text="Deals"
+		        android:textColor="#FFFFFF"
+		        android:textSize="30sp"
+		        android:layout_margin="15dip" />
+		    
+		</TableRow>
+	</TableLayout>
+
+    <Button
+        android:id="@+id/buttonFavorites"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:layout_weight="0.5"
+        android:text="Favorites" />
+    
+</RelativeLayout>
+
+    <!-- Listview to display slider menu -->
+    <ListView
+        android:id="@+id/list_slidermenu"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:choiceMode="singleChoice"
+        android:divider="@color/list_divider"
+        android:dividerHeight="1dp"        
+        android:listSelector="@drawable/list_selector"
+        android:background="@color/list_background"/>
+</android.support.v4.widget.DrawerLayout>

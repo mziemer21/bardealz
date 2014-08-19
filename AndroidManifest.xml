@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bardealz"
+    android:versionCode="1"
+    android:versionName="1.2" >
+    
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+    
+    <permission android:name="com.example.bardealz.permission.MAPS_RECEIVE" android:protectionLevel="signature"></permission>
+    <uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> 
+	<uses-permission android:name="com.bardealzapp.permission.MAPS_RECEIVE"/>
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> 
+	<uses-permission android:name="android.permission.CALL_PHONE" />	
+	<uses-feature android:glEsVersion="0x00020000" android:required="true"/> 
+	<uses-feature android:name="android.hardware.camera" />
+
+    <application
+        android:name="ParseApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <activity
+            android:name="activities.MainActivity"
+            android:label="@string/app_name" >
+        </activity>
+        
+        <activity
+            android:name="activities.LoginActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity android:name="activities.DetailsActivity"
+                  android:label="@string/app_name"></activity>
+        
+        <activity android:name="navigation.NavDrawer"
+                  android:label="@string/app_name"></activity>
+        
+        <activity android:name="activities.ListActivity"
+                  android:label="@string/app_name"
+                  android:launchMode="singleTop">
+        </activity>
+        
+        <activity android:name="activities.ListItemActivity"
+                  android:label="@string/app_name"></activity>
+        
+        <activity android:name="com.facebook.LoginActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.LogoutActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.MapActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.DealSearchActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.DealActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.RandomActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.RandomSearchActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.DealAddActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.DealDetailsActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.ListSearchActivity"
+                  android:label="@string/app_name" 
+                  android:launchMode="singleTop"/>
+        
+        <activity android:name="activities.MapSearchActivity"
+                  android:label="@string/app_name" 
+                  android:launchMode="singleTop"/>
+        
+        <activity android:name="activities.AboutActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.FeedbackActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.ChangeLocationActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.FavoritesActivity"
+                  android:label="@string/app_name" />
+        
+        <activity android:name="activities.FavoritesSearchActivity"
+                  android:label="@string/app_name" />
+        
+        <meta-data android:name="com.facebook.sdk.ApplicationId" 
+            android:value="@string/fb_app_id"/>
+        
+        <meta-data
+			android:name="com.google.android.maps.v2.API_KEY"
+			android:value="AIzaSyD0HbxSfGHUVME0TPw-rqsgZcn1IniWwC4"/>
+        
+        <meta-data
+			android:name="com.google.android.gms.version"
+			android:value="@integer/google_play_services_version" />
+        
+        <!-- Google Analytics Version v4 needs this value for easy tracking -->
+		<meta-data android:name="com.google.android.gms.analytics.globalConfigResource"
+			android:resource="@xml/global_tracker" />
+
+    </application>
+
+</manifest>
