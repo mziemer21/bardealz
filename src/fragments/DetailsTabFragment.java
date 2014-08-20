@@ -264,6 +264,13 @@ public class DetailsTabFragment extends Fragment {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
+								ParseUser.getCurrentUser().put("favorites", newFav);
+								try {
+									ParseUser.getCurrentUser().save();
+								} catch (ParseException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 								favorite.setText("Remove From Favorites");
 								Toast.makeText(getActivity(), "Added To Favorites", Toast.LENGTH_LONG).show();
 							}
