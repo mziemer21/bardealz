@@ -2,6 +2,7 @@ package activities;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import navigation.NavDrawer;
 import android.app.AlertDialog;
@@ -25,7 +26,9 @@ import com.bardealz.Helper;
 import com.bardealz.ParseApplication;
 import com.bardealz.R;
 import com.google.android.gms.analytics.GoogleAnalytics;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -299,12 +302,57 @@ public class DealDetailsActivity extends NavDrawer {
 					// deal not found problem
 				}
 			}
+			
+			if (!downVoteButton.isChecked() && !upVoteButton.isChecked()) {
+				queryParse(false);
+
+				if (deal != null) {
+					
+					if ((dealVoteUser != null) && (!dealVoteUser.get("vote").toString().equals("2"))) {
+						up_votes = deal.getInt("up_votes");
+						down_votes = deal.getInt("down_votes");
+						
+						if (dealVoteUser.get("vote").toString().equals("0")) {
+							// already voted down
+							dealVoteUser.put("vote", 2);
+							down_votes--;
+						} else if (dealVoteUser.get("vote").toString().equals("1")) {
+							dealVoteUser.put("vote", 2);
+							up_votes--;
+						}
+						
+						if ((up_votes + down_votes) != 0) {
+							rating = (up_votes / (up_votes + down_votes)) * 100;
+						} else if ((up_votes == 0) && (down_votes == 0)) {
+							rating = 0;
+						} else {
+							rating = 50;
+						}
+
+						deal.put("rating", rating);
+						deal.put("down_votes", down_votes);
+						deal.put("up_votes", up_votes);
+					}					
+				} else {
+					// deal not found problem
+				}
+			}
 
 			if ((deal != null) && (deal.isDirty())) {
-				deal.saveInBackground();
+				try {
+					deal.save();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			if ((dealVoteUser != null) && (dealVoteUser.isDirty())) {
-				dealVoteUser.saveInBackground();
+				try {
+					dealVoteUser.save();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}

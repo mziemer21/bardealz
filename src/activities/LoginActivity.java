@@ -145,7 +145,11 @@ public class LoginActivity extends Activity {
 
 					@Override
 					public void onCompleted(GraphUser user, Response response) {
-						email = user.getProperty("email").toString();
+						try{
+							email = user.getProperty("email").toString();
+						} catch (NullPointerException e){
+							
+						}
 						fName = user.getFirstName();
 						lName = user.getLastName();
 						birthday = user.getBirthday();

@@ -37,6 +37,7 @@ import com.bardealz.ParseApplication;
 import com.bardealz.R;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.parse.GetCallback;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -141,6 +142,10 @@ public class DealAddActivity extends NavDrawer {
 							day_of_week = (Spinner) findViewById(R.id.deal_day_spinner);
 							deal.put("day", day_of_week.getSelectedItem().toString());
 							deal.put("yelp_id", intent.getStringExtra("yelp_id"));
+							
+							ParseACL defaultACL = new ParseACL();
+							defaultACL.setPublicReadAccess(true);
+							defaultACL.setPublicWriteAccess(true);
 
 							ParseQuery<ParseObject> queryEstablishment = ParseQuery.getQuery("Establishment");
 							queryEstablishment.whereEqualTo("objectId", intent.getStringExtra("establishment_id"));
@@ -231,6 +236,8 @@ public class DealAddActivity extends NavDrawer {
 								addEstablishmentDay.put("friday", 0);
 								addEstablishmentDay.put("saturday", 0);
 								addEstablishmentDay.put(day_of_week.getSelectedItem().toString().toLowerCase(), 1);
+								addEstablishment.setACL(defaultACL);
+								addEstablishmentDay.setACL(defaultACL);
 								try {
 									addEstablishmentDay.save();
 								} catch (ParseException e) {
@@ -272,6 +279,8 @@ public class DealAddActivity extends NavDrawer {
 							deal.put("rating", 0);
 							deal.put("time_start", myDateStart);
 							deal.put("time_end", myDateEnd);
+							deal.setACL(defaultACL);
+	
 							try {
 								deal.save();
 							} catch (ParseException e) {
