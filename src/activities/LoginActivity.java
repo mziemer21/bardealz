@@ -33,6 +33,7 @@ public class LoginActivity extends Activity {
 
 	private Dialog loginProgressDialog;
 	private String fName, lName, email, birthday, relationship;
+	private ParseUser user = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,23 +109,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void done(ParseUser pUser, ParseException err) {
 
-				if (email != null) {
-					pUser.put("email", email);
-				}
-				if (fName != null) {
-					pUser.put("firstName", fName);
-				}
-				if (lName != null) {
-					pUser.put("lastName", lName);
-				}
-				if (birthday != null) {
-					pUser.put("birthday", birthday);
-				}
-				if (relationship != null) {
-					pUser.put("relationship", relationship);
-				}
-				
-				pUser.saveInBackground();
+				user = pUser;
 
 				if (loginProgressDialog != null) {
 					loginProgressDialog.dismiss();
@@ -144,17 +129,34 @@ public class LoginActivity extends Activity {
 				com.facebook.Request.executeMeRequestAsync(ParseFacebookUtils.getSession(), new com.facebook.Request.GraphUserCallback() {
 
 					@Override
-					public void onCompleted(GraphUser user, Response response) {
+					public void onCompleted(GraphUser gUser, Response response) {
 						try{
-							email = user.getProperty("email").toString();
+							email = gUser.getProperty("email").toString();
 						} catch (NullPointerException e){
 							
 						}
-						fName = user.getFirstName();
-						lName = user.getLastName();
-						birthday = user.getBirthday();
-						relationship = user.getProperty("relationship_status").toString();
+						fName = gUser.getFirstName();
+						lName = gUser.getLastName();
+						birthday = gUser.getBirthday();
+						relationship = gUser.getProperty("relationship_status").toString();
 						
+						if (email != null) {
+							user.put("email", email);
+						}
+						if (fName != null) {
+							user.put("firstName", fName);
+						}
+						if (lName != null) {
+							user.put("lastName", lName);
+						}
+						if (birthday != null) {
+							user.put("birthday", birthday);
+						}
+						if (relationship != null) {
+							user.put("relationship", relationship);
+						}
+						
+						user.saveInBackground();
 					
 					}
 				});

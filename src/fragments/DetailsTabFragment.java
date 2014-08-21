@@ -50,8 +50,55 @@ public class DetailsTabFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		View rootDetailsView = inflater.inflate(R.layout.fragment_details, container, false);
+		
+		// Locate the TextView in xml
+		txtName = (TextView) rootDetailsView.findViewById(R.id.name);
+		ratingImg = (ImageView) rootDetailsView.findViewById(R.id.rating_imageview);
+		txtAddress = (TextView) rootDetailsView.findViewById(R.id.address);
+		txtReviewCount = (TextView) rootDetailsView.findViewById(R.id.review_count);
+		txtReviewWord = (TextView) rootDetailsView.findViewById(R.id.review_count_word);
+		launch_phone = (Button) rootDetailsView.findViewById(R.id.phone_button);
+		launch_directions = (Button) rootDetailsView.findViewById(R.id.directions_button);
+		launch_info = (Button) rootDetailsView.findViewById(R.id.info_button);
+		launch_review = (Button) rootDetailsView.findViewById(R.id.review_button);
+		favorite = (Button) rootDetailsView.findViewById(R.id.favorite_button);
+				
+		if (ParseUser.getCurrentUser().getCreatedAt() == null) {
+			favorite.setText("Add To Favorites");
+			favorite.setOnClickListener(new OnClickListener() {
 
-		new RemoteDataTaskFavorite().execute();
+				@Override
+				public void onClick(View arg0) {
+						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+						// set title
+						builder.setTitle("Cannot Add Favorite");
+
+						// set dialog message
+						builder.setMessage("You must be logged in to add favorites.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								Intent loginActivity = new Intent(getActivity(), LoginActivity.class);
+								startActivity(loginActivity);
+								dialog.dismiss();
+							}
+						}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								// if this button is clicked, just close
+								// the dialog box and do nothing
+								dialog.cancel();
+							}
+						});
+
+						// create alert dialog
+						AlertDialog alertDialog = builder.create();
+
+						// show it
+						alertDialog.show();
+				}
+			});
+		} else {
+			new RemoteDataTaskFavorite().execute();
+		}
 
 		/* get arguments from activity */
 		extrasDeal = getArguments();
@@ -68,18 +115,6 @@ public class DetailsTabFragment extends Fragment {
 		curLat = String.valueOf(extrasDeal.getDouble("cur_lat"));
 		curLng = String.valueOf(extrasDeal.getDouble("cur_lng"));
 		mobUrl = extrasDeal.getString("mob_url");
-
-		// Locate the TextView in xml
-		txtName = (TextView) rootDetailsView.findViewById(R.id.name);
-		ratingImg = (ImageView) rootDetailsView.findViewById(R.id.rating_imageview);
-		txtAddress = (TextView) rootDetailsView.findViewById(R.id.address);
-		txtReviewCount = (TextView) rootDetailsView.findViewById(R.id.review_count);
-		txtReviewWord = (TextView) rootDetailsView.findViewById(R.id.review_count_word);
-		launch_phone = (Button) rootDetailsView.findViewById(R.id.phone_button);
-		launch_directions = (Button) rootDetailsView.findViewById(R.id.directions_button);
-		launch_info = (Button) rootDetailsView.findViewById(R.id.info_button);
-		launch_review = (Button) rootDetailsView.findViewById(R.id.review_button);
-		favorite = (Button) rootDetailsView.findViewById(R.id.favorite_button);
 
 		// Load the text into the TextView
 		txtName.setText(name);
@@ -179,26 +214,19 @@ public class DetailsTabFragment extends Fragment {
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			ParseQuery<ParseObject> queryEstablishment = ParseQuery.getQuery("Establishment");
-			queryEstablishment.whereEqualTo("objectId", extrasDeal.getString("establishment_id"));
-			try {
-				est = queryEstablishment.getFirst();
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			/*
 
-			if (est != null) {
+			if (est != null) {*/
 				ParseQuery<ParseObject> queryFav = ParseQuery.getQuery("user_favorite_establishments");
 				queryFav.whereEqualTo("user", ParseUser.getCurrentUser());
-				queryFav.whereEqualTo("establishment", est);
+				queryFav.whereEqualTo("establishment", ParseObject.createWithoutData("Establishment", extrasDeal.getString("establishment_id")));
 				try {
 					estFav = queryFav.getFirst();
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			}
+			//}
 
 			return null;
 		}
@@ -222,7 +250,7 @@ public class DetailsTabFragment extends Fragment {
 						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 						// set title
-						builder.setTitle("Cannot Add Deal");
+						builder.setTitle("Cannot Add Favorite");
 
 						// set dialog message
 						builder.setMessage("You must be logged in to add favorites.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
@@ -246,13 +274,27 @@ public class DetailsTabFragment extends Fragment {
 						alertDialog.show();
 					} else {
 						if (delete) {
-							estFav.deleteInBackground();
+							try {
+								estFav.delete();
+							} catch (ParseException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							favorite.setText("Add To Favorites");
 							Toast.makeText(getActivity(), "Deleted From Favorites", Toast.LENGTH_LONG).show();
+							delete = false;
 						} else {
 							if (extrasDeal.getString("establishment_id").contains("empty")) {
 								Helper.displayErrorStay("Sorry, a bar must have deals posted before you can favorite it.", getActivity());
 							} else {
+								ParseQuery<ParseObject> queryEstablishment = ParseQuery.getQuery("Establishment");
+								queryEstablishment.whereEqualTo("objectId", extrasDeal.getString("establishment_id"));
+								try {
+									est = queryEstablishment.getFirst();
+								} catch (ParseException e1) {
+									// TODO Auto-generated catch block
+									e1.printStackTrace();
+								}
 								favorite.setText("Add To Favorites");
 								ParseObject newFav = new ParseObject("user_favorite_establishments");
 								newFav.put("user", ParseUser.getCurrentUser());
@@ -273,6 +315,7 @@ public class DetailsTabFragment extends Fragment {
 								}
 								favorite.setText("Remove From Favorites");
 								Toast.makeText(getActivity(), "Added To Favorites", Toast.LENGTH_LONG).show();
+								delete = true;
 							}
 						}
 

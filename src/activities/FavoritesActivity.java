@@ -152,7 +152,7 @@ public class FavoritesActivity extends NavDrawer implements LocationListener, Go
 					ParseObject curEstDeal = ob.get(j);
 					ParseObject curEst = curEstDeal.getParseObject("establishment");
 					ParseObject curDay = curEstDeal.getParseObject("establishment_days");
-					String estabDealCount = String.valueOf(curDay.getInt(day_of_week.toLowerCase()));
+					String estabDealCount = String.valueOf(curDay.get(day_of_week.toLowerCase()));
 					yelpQuery = curEst.getString("yelp_id").toString();
 
 					tempBusiness = Helper.searchYelp(false, Double.toString(curEst.getParseGeoPoint("location").getLatitude()), Double.toString(curEst.getParseGeoPoint("location").getLongitude()),
@@ -184,7 +184,7 @@ public class FavoritesActivity extends NavDrawer implements LocationListener, Go
 		@Override
 		protected void onPostExecute(Void result) {
 			if (businesses.size() < 1) {
-				Helper.displayError("Sorry, nothing was found.  Try and add some favorites", ListSearchActivity.class, FavoritesActivity.this);
+				Helper.displayDoubleError("Sorry, nothing was found.  Try and add some favorites", "Home", "Search My Favorites", MainActivity.class, FavoritesSearchActivity.class, FavoritesActivity.this);
 				if (ProgressDialog != null) {
 					// Close the progressdialog
 					ProgressDialog.dismiss();

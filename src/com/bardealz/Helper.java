@@ -96,6 +96,39 @@ public class Helper {
 		// show it
 		alertDialog.show();
 	}
+	
+	public static void displayDoubleError(String errorMessage, String posMessage, String negMessage, final Class<?> activityPosative, final Class<?> activityNegative, final Context context) {
+		// no deals found so display a popup and return to search options
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+		// set title
+		builder.setTitle("No Results");
+
+		// set dialog message
+		builder.setMessage(errorMessage).setCancelable(false).setPositiveButton(posMessage, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+				Intent i = new Intent(context, activityPosative);
+				((Activity) (context)).finish();
+				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+				context.startActivity(i);
+			}
+		});
+		builder.setMessage(errorMessage).setCancelable(false).setNegativeButton(negMessage, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+				Intent i = new Intent(context, activityNegative);
+				((Activity) (context)).finish();
+				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+				context.startActivity(i);
+			}
+		});
+		// create alert dialog
+		AlertDialog alertDialog = builder.create();
+
+		// show it
+		alertDialog.show();
+	}
 
 	public static void displayErrorStay(String message, Context context) {
 		// no deals found so display a popup and return to search options

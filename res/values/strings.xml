@@ -20,7 +20,7 @@
     <string name="desc_list_item_icon">Item Icon</string>
     
     <!-- Facebook -->
-    <string name="app_id">YOUR_FACEBOOK_APP_ID</string>
+    <string name="app_id">787239624631485</string>
     <string name="login">Log In</string>
     <string name="logout">Log Out</string>
     <string name="login_intro">Check out your Facebook profile by logging in with the button below!</string>
@@ -71,7 +71,7 @@
         <item>@drawable/ic_home</item>
         <item>@drawable/ic_logout</item>
         <item>@drawable/ic_change_location</item>
-        <item>@drawable/ic_feedback</item>
+        <item>@drawable/ico_actionbar</item>
         <item>@drawable/ic_notifications</item>
     </array>
     <!-- End Nav Drawer List Item Icons -->

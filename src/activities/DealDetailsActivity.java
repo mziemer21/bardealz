@@ -96,9 +96,37 @@ public class DealDetailsActivity extends NavDrawer {
 		upVoteButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				if (ParseUser.getCurrentUser().getCreatedAt() == null) {
+					upVoteButton.setChecked(false);
+					AlertDialog.Builder builder = new AlertDialog.Builder(DealDetailsActivity.this);
 
-				if (downVoteButton.isChecked()) {
-					downVoteButton.setChecked(false);
+					// set title
+					builder.setTitle("Cannot Vote");
+
+					// set dialog message
+					builder.setMessage("You must be logged in to vote.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							Intent loginActivity = new Intent(DealDetailsActivity.this, LoginActivity.class);
+							startActivity(loginActivity);
+							dialog.dismiss();
+						}
+					}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							// if this button is clicked, just close
+							// the dialog box and do nothing
+							dialog.cancel();
+						}
+					});
+
+					// create alert dialog
+					AlertDialog alertDialog = builder.create();
+
+					// show it
+					alertDialog.show();
+				} else {
+					if (downVoteButton.isChecked()) {
+						downVoteButton.setChecked(false);
+					}
 				}
 			}
 		});
@@ -107,8 +135,37 @@ public class DealDetailsActivity extends NavDrawer {
 		downVoteButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				if (upVoteButton.isChecked()) {
-					upVoteButton.setChecked(false);
+				if (ParseUser.getCurrentUser().getCreatedAt() == null) {
+					downVoteButton.setChecked(false);
+					AlertDialog.Builder builder = new AlertDialog.Builder(DealDetailsActivity.this);
+
+					// set title
+					builder.setTitle("Cannot Vote");
+
+					// set dialog message
+					builder.setMessage("You must be logged in to vote.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							Intent loginActivity = new Intent(DealDetailsActivity.this, LoginActivity.class);
+							startActivity(loginActivity);
+							dialog.dismiss();
+						}
+					}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							// if this button is clicked, just close
+							// the dialog box and do nothing
+							dialog.cancel();
+						}
+					});
+
+					// create alert dialog
+					AlertDialog alertDialog = builder.create();
+
+					// show it
+					alertDialog.show();
+				} else {
+					if (upVoteButton.isChecked()) {
+						upVoteButton.setChecked(false);
+					}
 				}
 			}
 		});
