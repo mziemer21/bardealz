@@ -104,7 +104,7 @@ public class DealDetailsActivity extends NavDrawer {
 					builder.setTitle("Cannot Vote");
 
 					// set dialog message
-					builder.setMessage("You must be logged in to vote.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
+					builder.setMessage("We don't trust strangers.  Please login before voting.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							Intent loginActivity = new Intent(DealDetailsActivity.this, LoginActivity.class);
 							startActivity(loginActivity);
@@ -143,7 +143,7 @@ public class DealDetailsActivity extends NavDrawer {
 					builder.setTitle("Cannot Vote");
 
 					// set dialog message
-					builder.setMessage("You must be logged in to vote.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
+					builder.setMessage("We don't trust strangers.  Please login before voting.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							Intent loginActivity = new Intent(DealDetailsActivity.this, LoginActivity.class);
 							startActivity(loginActivity);
@@ -181,7 +181,7 @@ public class DealDetailsActivity extends NavDrawer {
 				builder.setTitle("Delete?");
 
 				// set dialog message
-				builder.setMessage("Are you sure you want to delete this deal?").setCancelable(false).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+				builder.setMessage("Are you sure you want to delete this deal??").setCancelable(false).setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						delete = true;
 						dialog.dismiss();

@@ -60,7 +60,7 @@ public class MapActivity extends NavDrawer implements LocationListener, GooglePl
 	private HashMap<Marker, MyMarker> mMarkersHashMap;
 	private Button redoMapButton;
 	private String query = "", distanceMiles = "3", yelpQuery = "", estId, day_of_week;
-	private Integer distanceMeters = 4828, listSize = 30;
+	private Integer distanceMeters = 4828, listMax = 30, listSize = 0;
 	private YelpParser yParser;
 	private ArrayList<Business> businesses = new ArrayList<Business>(), tempBusiness = new ArrayList<Business>();
 	private Location currentLocation;
@@ -224,7 +224,7 @@ public class MapActivity extends NavDrawer implements LocationListener, GooglePl
 			ParseQuery<ParseObject> queryEstDeals = new ParseQuery<ParseObject>("establishment_day_deals");
 			queryEstDeals.whereMatchesQuery("establishment", queryEstSearch);
 			queryEstDeals.include("establishment");
-			queryEstDeals.setLimit(20);
+			queryEstDeals.setLimit(30);
 			if (day_of_week != "") {
 				queryEstDeals.whereGreaterThan(day_of_week.toLowerCase(), 0);
 			}
@@ -260,14 +260,14 @@ public class MapActivity extends NavDrawer implements LocationListener, GooglePl
 				}
 			}
 
-			if ((businesses.size() < listSize) && (!onlyDeals)) {
+			if ((businesses.size() < listMax) && (!onlyDeals)) {
 				if (intent.getStringExtra("query") != null) {
 					yelpQuery = intent.getStringExtra("query");
 				} else {
 					yelpQuery = "";
 				}
 
-				tempBusiness = Helper.searchYelp(true, "", "", "", false, currentLocation, distanceMeters, 0, 0);
+				tempBusiness = Helper.searchYelp(true, "", "", yelpQuery, false, currentLocation, distanceMeters, 0, 0);
 				for (int m = 0; m < tempBusiness.size() - 1; m++) {
 					checkBusiness = (Business) tempBusiness.get(m);
 					if (!businesses.contains(checkBusiness)) {
@@ -283,7 +283,7 @@ public class MapActivity extends NavDrawer implements LocationListener, GooglePl
 		@Override
 		protected void onPostExecute(Void result) {
 			if (businesses.size() < 1) {
-				Helper.displayError("Sorry, nothing was found. Try and widen your search.", MapSearchActivity.class, MapActivity.this);
+				Helper.displayError("Sorry, we couldn't find anything.  Try and widen your search.", MapSearchActivity.class, MapActivity.this);
 			} else {
 
 				WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -381,7 +381,7 @@ public class MapActivity extends NavDrawer implements LocationListener, GooglePl
 				new RemoteDataTask(MapActivity.this).execute();
 			}
 		} else {
-			Helper.displayError("Sorry, nothing was found. Could not connect to the internet.", MainActivity.class, MapActivity.this);
+			Helper.displayError("We can't find the internet.  Are you sure you are connected?", MainActivity.class, MapActivity.this);
 		}
 
 	}
@@ -540,7 +540,7 @@ public class MapActivity extends NavDrawer implements LocationListener, GooglePl
 							}
 						});
 					} else {
-						Helper.displayErrorStay("Sorry, nothing was found. Could not connect to the internet.", MapActivity.this);
+						Helper.displayErrorStay("We can't find the internet.  Are you sure you are connected?", MapActivity.this);
 					}
 				}
 			});

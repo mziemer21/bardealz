@@ -184,7 +184,7 @@ public class FavoritesActivity extends NavDrawer implements LocationListener, Go
 		@Override
 		protected void onPostExecute(Void result) {
 			if (businesses.size() < 1) {
-				Helper.displayDoubleError("Sorry, nothing was found.  Try and add some favorites", "Home", "Search My Favorites", MainActivity.class, FavoritesSearchActivity.class, FavoritesActivity.this);
+				Helper.displayDoubleError("Sorry, nothing was found.  Try and add some favorites.", "Home", "Search My Favorites", MainActivity.class, FavoritesSearchActivity.class, FavoritesActivity.this);
 				if (ProgressDialog != null) {
 					// Close the progressdialog
 					ProgressDialog.dismiss();
@@ -260,7 +260,7 @@ public class FavoritesActivity extends NavDrawer implements LocationListener, Go
 							// Open SingleItemView.java Activity
 							startActivity(i);
 						} else {
-							Helper.displayErrorStay("Sorry, nothing was found.  Could not connect to the internet.", FavoritesActivity.this);
+							Helper.displayErrorStay("We can't find the internet.  Are you sure you are connected?", FavoritesActivity.this);
 						}
 					}
 				});
@@ -284,7 +284,7 @@ public class FavoritesActivity extends NavDrawer implements LocationListener, Go
 		if (Helper.isConnectedToInternet(FavoritesActivity.this) && reload) {
 			new RemoteDataTask(FavoritesActivity.this).execute();
 		} else if (!Helper.isConnectedToInternet(FavoritesActivity.this)) {
-			Helper.displayError("Sorry, nothing was found.  Could not connect to the internet.", MainActivity.class, FavoritesActivity.this);
+			Helper.displayError("We can't find the internet.  Are you sure you are connected?", MainActivity.class, FavoritesActivity.this);
 		}
 	}
 

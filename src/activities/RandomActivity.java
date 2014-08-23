@@ -173,7 +173,7 @@ public class RandomActivity extends Activity implements LocationListener, Google
 							startActivity(i);
 							RandomActivity.this.finish();
 						} else {
-							Helper.displayError("Sorry, nothing was found.  Try and widen your search.", RandomSearchActivity.class, RandomActivity.this);
+							Helper.displayError("Sorry, we couldn't find anything.  Try and widen your search.", RandomSearchActivity.class, RandomActivity.this);
 						}
 					} else {
 						Log.d("Deal Search Error", e.toString());
@@ -181,7 +181,7 @@ public class RandomActivity extends Activity implements LocationListener, Google
 				}
 			});
 		} else {
-			Helper.displayError("Sorry, nothing was found.  Could not connect to the internet.", RandomSearchActivity.class, RandomActivity.this);
+			Helper.displayError("We can't find the internet.  Are you sure you are connected?", RandomSearchActivity.class, RandomActivity.this);
 		}
 	}
 

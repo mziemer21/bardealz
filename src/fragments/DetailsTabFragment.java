@@ -75,7 +75,7 @@ public class DetailsTabFragment extends Fragment {
 						builder.setTitle("Cannot Add Favorite");
 
 						// set dialog message
-						builder.setMessage("You must be logged in to add favorites.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
+						builder.setMessage("You should login if you want to add to your favorites.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								Intent loginActivity = new Intent(getActivity(), LoginActivity.class);
 								startActivity(loginActivity);
@@ -253,7 +253,7 @@ public class DetailsTabFragment extends Fragment {
 						builder.setTitle("Cannot Add Favorite");
 
 						// set dialog message
-						builder.setMessage("You must be logged in to add favorites.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
+						builder.setMessage("You should login if you want to add to your favorites.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
 								Intent loginActivity = new Intent(getActivity(), LoginActivity.class);
 								startActivity(loginActivity);

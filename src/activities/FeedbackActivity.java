@@ -55,7 +55,7 @@ public class FeedbackActivity extends NavDrawer {
 
 	protected void sendEmail() {
 
-		String[] TO = { "contact.the.bar.app@gmail.com" };
+		String[] TO = { "contact.bardealz@gmail.com" };
 		String[] CC = {};
 		Intent emailIntent = new Intent(Intent.ACTION_SEND);
 		emailIntent.setData(Uri.parse("mailto:"));

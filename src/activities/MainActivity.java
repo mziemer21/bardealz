@@ -81,10 +81,10 @@ public class MainActivity extends NavDrawer {
 					AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
 					// set title
-					builder.setTitle("Cannot Add Deal");
+					builder.setTitle("Cannot Load Favorites");
 
 					// set dialog message
-					builder.setMessage("You must be logged in to view your favorites.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
+					builder.setMessage("You should login if you want to view your favorites.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							Intent loginActivity = new Intent(MainActivity.this, LoginActivity.class);
 							startActivity(loginActivity);

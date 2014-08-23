@@ -73,7 +73,7 @@ public class DealsTabFragment extends Fragment {
 					builder.setTitle("Cannot Add Deal");
 
 					// set dialog message
-					builder.setMessage("You must be logged in to add a deal.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
+					builder.setMessage("We don't trust strangers.  Please login before adding stuff.").setCancelable(false).setPositiveButton("Login", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
 							Intent loginActivity = new Intent(getActivity(), LoginActivity.class);
 							startActivity(loginActivity);

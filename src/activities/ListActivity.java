@@ -43,12 +43,12 @@ import com.parse.ParseQuery;
 public class ListActivity extends NavDrawer implements LocationListener, GooglePlayServicesClient.ConnectionCallbacks, GooglePlayServicesClient.OnConnectionFailedListener {
 	// Declare Variables
 	private ListView listview;
-	private List<ParseObject> ob = new ArrayList<ParseObject>();
+	private List<ParseObject> ob = new ArrayList<ParseObject>(), obList = new ArrayList<ParseObject>();
 	private String query = "", distanceMiles, establishment_id, yelpQuery = "", day_of_week;
 	private Location currentLocation = null;
 	private Intent intent;
-	private Integer countPrev = 0, sort_mode, distanceMeters, loadOffset = 0, listSize = 20;
-	private ArrayList<Business> businesses = new ArrayList<Business>(), tempBusiness = new ArrayList<Business>();
+	private Integer listCountPrev = 0, sort_mode, distanceMeters, loadOffset = 0, listMax = 20;
+	private ArrayList<Business> businesses = new ArrayList<Business>(), tempBusiness = new ArrayList<Business>(), tempBusinesses = new ArrayList<Business>();
 	private Business checkBusiness;
 	private ProgressDialog ProgressDialog;
 	private Calendar calendar = Calendar.getInstance();
@@ -179,30 +179,24 @@ public class ListActivity extends NavDrawer implements LocationListener, GoogleP
 					tempBusiness = Helper.searchYelp(false, Double.toString(curEst.getParseGeoPoint("location").getLatitude()), Double.toString(curEst.getParseGeoPoint("location").getLongitude()),
 							yelpQuery, true, currentLocation, distanceMeters, 0, 0);
 					if ((tempBusiness.size() > 0) && (!businesses.contains(tempBusiness.get(0)))) {
-
-						if ((query != "") && (tempBusiness.get(0).getName().toLowerCase().contains(query.toLowerCase()))) {
-							tempBusiness.get(0).setDealCount(estabDealCount);
-							tempBusiness.get(0).setEstablishmentId(curEst.getObjectId());
-							businesses.add(tempBusiness.get(0));
-						} else if (query == "") {
 							tempBusiness.get(0).setDealCount(estabDealCount);
 							tempBusiness.get(0).setEstablishmentId(curEst.getObjectId());
 							businesses.add(tempBusiness.get(0));
 						}
 					}
 				}
-			}
+			
 
-			if ((businesses.size() < listSize) && (!onlyDeals)) {
+			if ((businesses.size() < listMax) && (!onlyDeals)) {
 				if (intent.getStringExtra("query") != null) {
 					yelpQuery = intent.getStringExtra("query");
 				} else {
 					yelpQuery = "";
 				}
 
-				tempBusiness = Helper.searchYelp(true, "", "", "", false, currentLocation, distanceMeters, sort_mode, loadOffset);
-				for (int m = 0; m < tempBusiness.size() - 1; m++) {
-					checkBusiness = (Business) tempBusiness.get(m);
+				tempBusinesses = Helper.searchYelp(true, "", "", yelpQuery, false, currentLocation, distanceMeters, sort_mode, loadOffset);
+				for (int m = 0; m < tempBusinesses.size() - 1; m++) {
+					checkBusiness = (Business) tempBusinesses.get(m);
 					if (!businesses.contains(checkBusiness)) {
 						checkBusiness.setDealCount("0");
 						businesses.add(checkBusiness);
@@ -229,7 +223,7 @@ public class ListActivity extends NavDrawer implements LocationListener, GoogleP
 				}
 			}
 
-			listSize += businesses.size();
+			listMax += businesses.size();
 
 			return null;
 		}
@@ -237,21 +231,21 @@ public class ListActivity extends NavDrawer implements LocationListener, GoogleP
 		@Override
 		protected void onPostExecute(Void result) {
 			resumed = true;
-			if (((businesses.size() - countPrev) < 1) && (moreButton)) {
-				Helper.displayErrorStay("Sorry, nothing was found.  Try and widen your search.", ListActivity.this);
+			if (((businesses.size() - listCountPrev) < 1) && (moreButton)) {
+				Helper.displayErrorStay("Sorry, we couldn't find anything.  Try and widen your search.", ListActivity.this);
 				moreButton = false;
 				if (ProgressDialog != null) {
 					// Close the progressdialog
 					ProgressDialog.dismiss();
 				}
 			} else if (businesses.size() < 1) {
-				Helper.displayError("Sorry, nothing was found.  Try and widen your search.", ListSearchActivity.class, ListActivity.this);
+				Helper.displayError("Sorry, we couldn't find anything.  Try and widen your search.", ListSearchActivity.class, ListActivity.this);
 				if (ProgressDialog != null) {
 					// Close the progressdialog
 					ProgressDialog.dismiss();
 				}
 			} else {
-				countPrev = businesses.size();
+				listCountPrev = businesses.size();
 				// Locate the listview in listview_main.xml
 				listview = (ListView) findViewById(R.id.listview);
 				// Pass the results into an ArrayAdapter
@@ -281,7 +275,7 @@ public class ListActivity extends NavDrawer implements LocationListener, GoogleP
 						@Override
 						public void onClick(View arg0) {
 							resumed = false;
-							loadOffset += 20;
+							loadOffset += tempBusinesses.size();
 							locationClient.disconnect();
 							locationClient.connect();
 							moreButton = true;
@@ -307,16 +301,16 @@ public class ListActivity extends NavDrawer implements LocationListener, GoogleP
 							ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Establishment");
 							query.whereEqualTo("yelp_id", businesses.get(position).getYelpId());
 							try {
-								ob = query.find();
+								obList = query.find();
 							} catch (Exception e) {
 								Log.e("Error", e.getMessage());
 								e.printStackTrace();
 							}
 
-							if (ob.size() == 0) {
+							if (obList.size() == 0) {
 								establishment_id = "empty";
 							} else {
-								establishment_id = ob.get(0).getObjectId().toString();
+								establishment_id = obList.get(0).getObjectId().toString();
 							}
 
 							currentLocation = getLocation();
@@ -347,7 +341,7 @@ public class ListActivity extends NavDrawer implements LocationListener, GoogleP
 							// Open SingleItemView.java Activity
 							startActivity(i);
 						} else {
-							Helper.displayErrorStay("Sorry, nothing was found.  Could not connect to the internet.", ListActivity.this);
+							Helper.displayErrorStay("We can't find the internet.  Are you sure you are connected?", ListActivity.this);
 						}
 					}
 				});
@@ -371,7 +365,7 @@ public class ListActivity extends NavDrawer implements LocationListener, GoogleP
 		if ((!resumed) && (Helper.isConnectedToInternet(ListActivity.this))) {
 			new RemoteDataTask(ListActivity.this).execute();
 		} else if (!Helper.isConnectedToInternet(ListActivity.this)) {
-			Helper.displayError("Sorry, nothing was found.  Could not connect to the internet.", MainActivity.class, ListActivity.this);
+			Helper.displayError("We can't find the internet.  Are you sure you are connected?", MainActivity.class, ListActivity.this);
 		}
 	}
 

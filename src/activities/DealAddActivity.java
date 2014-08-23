@@ -107,11 +107,11 @@ public class DealAddActivity extends NavDrawer {
 
 				mEdit = (EditText) findViewById(R.id.edit_deal_title);
 				if (mEdit.getText().toString().matches("")) {
-					displayError("Please enter a title.");
+					displayError("This deal still needs a title.");
 				} else if (myDateStart == null) {
-					displayError("Please select a start time.");
+					displayError("This deal still needs a start time.");
 				} else if (myDateEnd == null) {
-					displayError("Please select a end time.");
+					displayError("This deal still needs a end time.");
 				} else {
 
 					if (ProgressDialog != null) {
@@ -377,7 +377,7 @@ public class DealAddActivity extends NavDrawer {
 		AlertDialog.Builder builder = new AlertDialog.Builder(DealAddActivity.this);
 
 		// set title
-		builder.setTitle("No Results");
+		builder.setTitle("Save Fail...");
 
 		// set dialog message
 		builder.setMessage(message).setCancelable(false).setPositiveButton("Ok", new DialogInterface.OnClickListener() {

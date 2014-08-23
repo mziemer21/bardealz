@@ -168,14 +168,14 @@ public class DealActivity extends NavDrawer implements LocationListener, GoogleP
 							// The count request succeeded. Log the
 							// count
 							if (((ob.size()) < 1) && (moreButton)) {
-								Helper.displayErrorStay("Sorry, nothing was found.  Try and widen your search.", DealActivity.this);
+								Helper.displayErrorStay("Sorry, we couldn't find anything.  Try and widen your search.", DealActivity.this);
 								moreButton = false;
 								if (ProgressDialog != null) {
 									// Close the progressdialog
 									ProgressDialog.dismiss();
 								}
 							} else if (ob.size() < 1) {
-								Helper.displayError("Sorry, nothing was found.  Try and widen your search.", DealSearchActivity.class, DealActivity.this);
+								Helper.displayError("Sorry, we couldn't find anything.  Try and widen your search.", DealSearchActivity.class, DealActivity.this);
 								if (ProgressDialog != null) {
 									// Close the progressdialog
 									ProgressDialog.dismiss();
@@ -191,7 +191,7 @@ public class DealActivity extends NavDrawer implements LocationListener, GoogleP
 				});
 			}
 		} else {
-			Helper.displayError("Sorry, nothing was found.  Could not connect to the internet.", DealSearchActivity.class, DealActivity.this);
+			Helper.displayError("We can't find the internet.  Are you sure you are connected?", DealSearchActivity.class, DealActivity.this);
 		}
 	}
 
@@ -272,7 +272,7 @@ public class DealActivity extends NavDrawer implements LocationListener, GoogleP
 
 					startActivity(i);
 				} else {
-					Helper.displayErrorStay("Sorry, nothing was found.  Could not connect to the internet.", DealActivity.this);
+					Helper.displayErrorStay("We can't find the internet.  Are you sure you are connected?", DealActivity.this);
 				}
 			}
 		});
