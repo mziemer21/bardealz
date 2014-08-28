@@ -32,7 +32,7 @@ import com.parse.ParseUser;
 public class LoginActivity extends Activity {
 
 	private Dialog loginProgressDialog;
-	private String fName, lName, email, birthday, relationship;
+	private String fName, lName, email, birthday, relationship, gender;
 	private ParseUser user = null;
 
 	@Override
@@ -137,8 +137,9 @@ public class LoginActivity extends Activity {
 						}
 						fName = gUser.getFirstName();
 						lName = gUser.getLastName();
-						birthday = gUser.getBirthday();
-						relationship = gUser.getProperty("relationship_status").toString();
+						gender = gUser.getProperty("gender").toString();
+						/*birthday = gUser.getBirthday();
+						relationship = gUser.getProperty("relationship_status").toString();*/
 						
 						if (email != null) {
 							user.put("email", email);
@@ -149,12 +150,15 @@ public class LoginActivity extends Activity {
 						if (lName != null) {
 							user.put("lastName", lName);
 						}
-						if (birthday != null) {
+						if(gender != null){
+							user.put("gender", gender);
+						}
+						/*if (birthday != null) {
 							user.put("birthday", birthday);
 						}
 						if (relationship != null) {
 							user.put("relationship", relationship);
-						}
+						}*/
 						
 						user.saveInBackground();
 					
