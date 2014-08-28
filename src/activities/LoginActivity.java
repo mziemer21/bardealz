@@ -132,12 +132,13 @@ public class LoginActivity extends Activity {
 					public void onCompleted(GraphUser gUser, Response response) {
 						try{
 							email = gUser.getProperty("email").toString();
+							fName = gUser.getFirstName();
+							lName = gUser.getLastName();
+							gender = gUser.getProperty("gender").toString();
 						} catch (NullPointerException e){
 							
 						}
-						fName = gUser.getFirstName();
-						lName = gUser.getLastName();
-						gender = gUser.getProperty("gender").toString();
+						
 						/*birthday = gUser.getBirthday();
 						relationship = gUser.getProperty("relationship_status").toString();*/
 						
