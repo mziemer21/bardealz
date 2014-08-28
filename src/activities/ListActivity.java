@@ -47,7 +47,7 @@ public class ListActivity extends NavDrawer implements LocationListener, GoogleP
 	private String query = "", distanceMiles, establishment_id, yelpQuery = "", day_of_week;
 	private Location currentLocation = null;
 	private Intent intent;
-	private Integer listCountPrev = 0, sort_mode, distanceMeters, loadOffset = 0, listMax = 20;
+	private Integer listCountPrev = 0, sort_mode, yelp_sort, distanceMeters, loadOffset = 0, listMax = 20;
 	private ArrayList<Business> businesses = new ArrayList<Business>(), tempBusiness = new ArrayList<Business>(), tempBusinesses = new ArrayList<Business>();
 	private Business checkBusiness;
 	private ProgressDialog ProgressDialog;
@@ -90,16 +90,94 @@ public class ListActivity extends NavDrawer implements LocationListener, GoogleP
 		case R.id.action_filter:
 			loadOffset = 0;
 			Intent i = new Intent(ListActivity.this, ListSearchActivity.class);
-			finish();
 			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
 			startActivity(i);
+			finish();
 			return true;
 		case R.id.action_clear_search:
 			loadOffset = 0;
 			Intent j = new Intent(ListActivity.this, ListActivity.class);
-			finish();
 			j.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NO_HISTORY);
+			finish();
 			startActivity(j);
+			return true;
+		case R.id.action_sort:
+			Collections.reverse(businesses);
+			// Locate the listview in listview_main.xml
+			listview = (ListView) findViewById(R.id.listview);
+			// Pass the results into an ArrayAdapter
+			List<EstablishmentRowItem> rowItems = new ArrayList<EstablishmentRowItem>();
+
+			// Retrieve object "title" from Parse.com database
+			for (int k = 0; businesses.size() > k; k++) {
+				EstablishmentRowItem listItem = new EstablishmentRowItem(businesses.get(k).getName(), Double.parseDouble(businesses.get(k).getRating()), businesses.get(k).getAddress(), businesses
+						.get(k).getDistance(), businesses.get(k).getDealCount(), businesses.get(k).getRatingCount());
+				rowItems.add(listItem);
+			}
+
+			// Pass the results into an ArrayAdapter
+			EstablishmentListViewAdapter establishmentAdapter = new EstablishmentListViewAdapter(ListActivity.this, R.layout.listview_item_establishment, rowItems);
+			// Binds the Adapter to the ListView
+			listview.setAdapter(establishmentAdapter);
+			if (ProgressDialog != null) {
+				// Close the progressdialog
+				ProgressDialog.dismiss();
+			}
+			// Capture button clicks on ListView items
+			listview.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+					if (Helper.isConnectedToInternet(ListActivity.this)) {
+
+						ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Establishment");
+						query.whereEqualTo("yelp_id", businesses.get(position).getYelpId());
+						try {
+							obList = query.find();
+						} catch (Exception e) {
+							Log.e("Error", e.getMessage());
+							e.printStackTrace();
+						}
+
+						if (obList.size() == 0) {
+							establishment_id = "empty";
+						} else {
+							establishment_id = obList.get(0).getObjectId().toString();
+						}
+
+						currentLocation = getLocation();
+						// Send single item click data to SingleItemView
+						// Class
+						Intent i = new Intent(ListActivity.this, DetailsActivity.class);
+						// Pass data "name" followed by the position
+						i.putExtra("establishment_id", establishment_id);
+						i.putExtra("est_lat", Double.parseDouble(businesses.get(position).getLatitude()));
+						i.putExtra("est_lng", Double.parseDouble(businesses.get(position).getLongitude()));
+						i.putExtra("est_name", businesses.get(position).getName());
+						i.putExtra("yelp_id", businesses.get(position).getYelpId());
+						i.putExtra("rating", businesses.get(position).getRating());
+						i.putExtra("rating_count", businesses.get(position).getRatingCount());
+						i.putExtra("address", businesses.get(position).getAddress());
+						i.putExtra("city", businesses.get(position).getCity());
+						i.putExtra("state", businesses.get(position).getState());
+						i.putExtra("zip", businesses.get(position).getZipcode());
+						i.putExtra("phone", businesses.get(position).getPhone());
+						i.putExtra("display_phone", businesses.get(position).getDisplayPhone());
+						i.putExtra("distance", businesses.get(position).getDistance());
+						i.putExtra("mobile_url", businesses.get(position).getMobileURL());
+						i.putExtra("day_of_week", (day_of_week == "") ? Helper.setDayOfWeek(calendar.get(Calendar.DAY_OF_WEEK)) : day_of_week);
+						i.putExtra("cur_lat", currentLocation.getLatitude());
+						i.putExtra("cur_lng", currentLocation.getLongitude());
+						i.putExtra("distance", distanceMiles);
+
+						// Open SingleItemView.java Activity
+						startActivity(i);
+					} else {
+						Helper.displayErrorStay("We can't find the internet.  Are you sure you are connected?", ListActivity.this);
+					}
+				}
+			});
+		
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -190,11 +268,13 @@ public class ListActivity extends NavDrawer implements LocationListener, GoogleP
 			if ((businesses.size() < listMax) && (!onlyDeals)) {
 				if (intent.getStringExtra("query") != null) {
 					yelpQuery = intent.getStringExtra("query");
+					yelp_sort = sort_mode;
 				} else {
 					yelpQuery = "";
+					yelp_sort = sort_mode;
 				}
 
-				tempBusinesses = Helper.searchYelp(true, "", "", yelpQuery, false, currentLocation, distanceMeters, sort_mode, loadOffset);
+				tempBusinesses = Helper.searchYelp(true, "", "", yelpQuery, false, currentLocation, distanceMeters, yelp_sort, loadOffset);
 				for (int m = 0; m < tempBusinesses.size() - 1; m++) {
 					checkBusiness = (Business) tempBusinesses.get(m);
 					if (!businesses.contains(checkBusiness)) {

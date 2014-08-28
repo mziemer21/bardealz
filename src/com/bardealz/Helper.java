@@ -50,11 +50,11 @@ public class Helper {
 		String endTime = simpDate.format(dateEnd);
 
 		if (startTime.charAt(0) == '0') {
-			startTime.substring(1);
+			startTime = startTime.substring(1);
 		}
 
 		if (endTime.charAt(0) == '0') {
-			endTime.substring(1);
+			endTime = endTime.substring(1);
 		}
 
 		return startTime + " - " + endTime;

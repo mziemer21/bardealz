@@ -62,9 +62,9 @@ public class ListSearchActivity extends NavDrawer {
 			public void onClick(View arg0) {
 
 				if (search_type_spinner.getSelectedItem().toString().compareTo("Alphabetical") == 0) {
-					search_type = 1;
-				} else if (search_type_spinner.getSelectedItem().toString().compareTo("Distance") == 0) {
 					search_type = 0;
+				} else if (search_type_spinner.getSelectedItem().toString().compareTo("Distance") == 0) {
+					search_type = 1;
 				} else if (search_type_spinner.getSelectedItem().toString()
 						.compareTo("Highest Rated") == 0) {
 					search_type = 2;

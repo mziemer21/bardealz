@@ -48,19 +48,41 @@ public class Yelp {
 	 */
 	public String search(String term, double latitude, double longitude, String distance, int sortMode, Integer loadMore) {
 
+		Double swLat, swLng, neLat, neLng;
+	    Double half_side_in_km = Double.parseDouble(distance)/1000;// * 1.609344;
+	    
+	    Double lat = Math.toRadians(latitude);
+	    Double lng = Math.toRadians(longitude);
+
+	    Integer radius = 6371;
+	    // Radius of the parallel at given latitude
+	    Double parallel_radius = radius*Math.cos(lat);
+
+	    Double lat_min = lat - half_side_in_km/radius;
+	    Double lat_max = lat + half_side_in_km/radius;
+	    Double lon_min = lng - half_side_in_km/parallel_radius;
+	    Double lon_max = lng + half_side_in_km/parallel_radius;
+
+	    swLat = Math.toDegrees(lat_min);
+	    swLng = Math.toDegrees(lon_min);
+	    neLat = Math.toDegrees(lat_max);
+	    neLng = Math.toDegrees(lon_max);
+		
+		
 		OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
 		request.addQuerystringParameter("category_filter", "bars");
-		if(!term.contains("")){
+		if(!term.equals("")){
 			request.addQuerystringParameter("term", term);
 		}
-		request.addQuerystringParameter("ll", latitude + "," + longitude);
-		request.addQuerystringParameter("limit", "20");
+		//request.addQuerystringParameter("ll", latitude + "," + longitude);
+		request.addQuerystringParameter("bounds", swLat + "," + swLng + "|" + neLat + "," + neLng);
+		request.addQuerystringParameter("limit", "15");
 		request.addQuerystringParameter("radius_filter", distance);
 		request.addQuerystringParameter("sort", String.valueOf(sortMode));
 		if (loadMore > 0) {
 			request.addQuerystringParameter("offset", String.valueOf(loadMore));
 		}
-
+		
 		service.signRequest(accessToken, request);
 		Response response = request.send();
 		return response.getBody();

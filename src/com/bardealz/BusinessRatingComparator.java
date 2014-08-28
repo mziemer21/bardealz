@@ -5,7 +5,7 @@ import java.util.Comparator;
 public class BusinessRatingComparator implements Comparator<Business> {
 
 	@Override
-	public int compare(Business arg0, Business arg1) {
-		return arg1.rating.compareTo(arg0.rating);
+	public int compare(Business lhs, Business rhs) {
+		return lhs.rating.compareTo(rhs.rating);
 	}
 }

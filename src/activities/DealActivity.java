@@ -1,6 +1,7 @@
 package activities;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import navigation.NavDrawer;
@@ -10,6 +11,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -59,6 +63,33 @@ public class DealActivity extends NavDrawer implements LocationListener, GoogleP
 
 		// Get tracker.
 		((ParseApplication) getApplication()).getTracker(ParseApplication.TrackerName.APP_TRACKER);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.filter_actions_deals, menu);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/**
+	 * On selecting action bar icons
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Take appropriate action for each action item click
+		switch (item.getItemId()) {
+		case R.id.action_filter:
+			finish();
+			return true;
+		case R.id.action_sort:
+			Collections.reverse(ob);
+			makeList(false);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
@@ -182,7 +213,7 @@ public class DealActivity extends NavDrawer implements LocationListener, GoogleP
 								}
 							} else {
 								countPrev = ob.size();
-								makeList();
+								makeList(true);
 							}
 						} else {
 							Log.d("Deal Search Error", e.toString());
@@ -195,7 +226,7 @@ public class DealActivity extends NavDrawer implements LocationListener, GoogleP
 		}
 	}
 
-	private void makeList() {
+	private void makeList(Boolean button) {
 		resumed = true;
 		// Locate the listview in deal_listview.xml
 		listview = (ListView) findViewById(R.id.deal_listview);

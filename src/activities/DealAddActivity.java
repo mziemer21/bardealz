@@ -156,7 +156,7 @@ public class DealAddActivity extends NavDrawer {
 								e.printStackTrace();
 							}
 							try {
-								Thread.sleep(101);
+								Thread.sleep(151);
 							} catch (InterruptedException ex) {
 								Thread.currentThread().interrupt();
 							}
@@ -340,7 +340,17 @@ public class DealAddActivity extends NavDrawer {
 			} else {
 				timeOfDay = "pm";
 			}
-			timeStartText.setText(hourOfDay % 12 + ":" + minute + " " + timeOfDay);
+			String min = "00", hr;
+			if(hourOfDay % 12 == 0){
+				hr = "12";
+			} else {
+				hr = String.valueOf(hourOfDay % 12);
+			}
+			if(minute == 0){
+				timeStartText.setText(hr + ":" + min + " " + timeOfDay);
+			} else {
+				timeStartText.setText(hr + ":" + minute + " " + timeOfDay);
+			}
 		}
 	}
 
@@ -368,7 +378,17 @@ public class DealAddActivity extends NavDrawer {
 			} else {
 				timeOfDay = "pm";
 			}
-			timeEndText.setText(hourOfDay % 12 + ":" + minute + " " + timeOfDay);
+			String min = "00", hr;
+			if(hourOfDay % 12 == 0){
+				hr = "12";
+			} else {
+				hr = String.valueOf(hourOfDay % 12);
+			}
+			if(minute == 0){
+				timeEndText.setText(hr + ":" + min + " " + timeOfDay);
+			} else {
+				timeEndText.setText(hr + ":" + minute + " " + timeOfDay);
+			}
 		}
 	}
 

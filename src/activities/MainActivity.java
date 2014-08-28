@@ -42,6 +42,7 @@ public class MainActivity extends NavDrawer {
 			@Override
 			public void onClick(View arg0) {
 				Intent ListActivity = new Intent(MainActivity.this, ListActivity.class);
+				ListActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(ListActivity);
 			}
 		});
@@ -51,6 +52,7 @@ public class MainActivity extends NavDrawer {
 			@Override
 			public void onClick(View arg0) {
 				Intent RandomActivity = new Intent(MainActivity.this, RandomSearchActivity.class);
+				RandomActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(RandomActivity);
 			}
 		});
@@ -60,6 +62,7 @@ public class MainActivity extends NavDrawer {
 			@Override
 			public void onClick(View arg0) {
 				Intent MapActivity = new Intent(MainActivity.this, MapActivity.class);
+				MapActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(MapActivity);
 			}
 		});
@@ -69,6 +72,7 @@ public class MainActivity extends NavDrawer {
 			@Override
 			public void onClick(View arg0) {
 				Intent DealActivity = new Intent(MainActivity.this, DealSearchActivity.class);
+				DealActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(DealActivity);
 			}
 		});

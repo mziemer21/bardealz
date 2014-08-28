@@ -273,7 +273,7 @@ public class DealDetailsActivity extends NavDrawer {
 
 		if ((deal != null) && (delete)) {
 			deal.deleteInBackground();
-			Toast.makeText(getApplicationContext(), "Deal Added!", Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "Deal Deleted!", Toast.LENGTH_LONG).show();
 		} else {
 			if (upVoteButton.isChecked()) {
 				queryParse(false);

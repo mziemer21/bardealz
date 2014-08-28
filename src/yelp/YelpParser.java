@@ -112,42 +112,56 @@ public class YelpParser {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 			try {
 				b.setRating(o1.getString("rating"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 			try {
 				b.setRatingCount(o1.getString("review_count"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 			try {
 				b.setName(o1.getString("name"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 			try {
 				b.setYelpId(o1.getString("id"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 			try {
 				b.setPhone(o1.getString("phone"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 			try {
 				b.setDisplayPhone(o1.getString("display_phone"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 			try {
 				loc = (Object) o1.get("location");
@@ -159,27 +173,37 @@ public class YelpParser {
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 			try {
 				b.setCity(getBusinessCity((JSONObject) loc));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 			try {
 				b.setState(getBusinessState((JSONObject) loc));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 			try {
 				b.setZipcode(getBusinessZipcode((JSONObject) loc));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NullPointerException e1){
+				e1.printStackTrace();
 			}
 
-			BusinessList.add(b);
+			if((b.getName() != null) && (b.getDistance() != null) && (b.getRating() != null)){
+				BusinessList.add(b);
+			}
 		} else {
 
 			for (int i = 0; getJSONSize() > i; i++) {
@@ -190,11 +214,15 @@ public class YelpParser {
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				} catch (NullPointerException e1){
+					e1.printStackTrace();
 				}
 				try {
 					b.setRating(getBusinessRating(i));
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NullPointerException e1){
 					e1.printStackTrace();
 				}
 				try {
@@ -202,11 +230,15 @@ public class YelpParser {
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				} catch (NullPointerException e1){
+					e1.printStackTrace();
 				}
 				try {
 					b.setName(getBusinessName(i));
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NullPointerException e1){
 					e1.printStackTrace();
 				}
 				try {
@@ -214,11 +246,15 @@ public class YelpParser {
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				} catch (NullPointerException e1){
+					e1.printStackTrace();
 				}
 				try {
 					b.setPhone(getBusinessPhone(i));
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NullPointerException e1){
 					e1.printStackTrace();
 				}
 				try {
@@ -226,20 +262,22 @@ public class YelpParser {
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
-				try {
-					b.setDistance(getBusinessDistance(i));
-				} catch (JSONException e1) {
-					// TODO Auto-generated catch block
+				} catch (NullPointerException e1){
 					e1.printStackTrace();
 				}
 				try {
 					loc = getBusinessLocation(i);
 					b.setAddress(getBusinessAddress((JSONObject) loc));
 					b.setLatLng(getBusinessAddress((JSONObject) loc), getBusinessCity((JSONObject) loc), getBusinessState((JSONObject) loc), getBusinessZipcode((JSONObject) loc));
-
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NullPointerException e1){
+					e1.printStackTrace();
+				}
+				try {
+					b.setDistance(calculateDistance(Double.parseDouble(b.getLatitude()), Double.parseDouble(b.getLongitude()), latCur, lngCur));
+				} catch (NullPointerException e1){
 					e1.printStackTrace();
 				}
 				try {
@@ -247,11 +285,15 @@ public class YelpParser {
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				} catch (NullPointerException e1){
+					e1.printStackTrace();
 				}
 				try {
 					b.setState(getBusinessState((JSONObject) loc));
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NullPointerException e1){
 					e1.printStackTrace();
 				}
 				try {
@@ -259,9 +301,12 @@ public class YelpParser {
 				} catch (JSONException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				} catch (NullPointerException e1){
+					e1.printStackTrace();
 				}
-
-				BusinessList.add(b);
+				if((b.getName() != null) && (b.getDistance() != null) && (b.getRating() != null)){
+					BusinessList.add(b);
+				}
 			}
 		}
 
